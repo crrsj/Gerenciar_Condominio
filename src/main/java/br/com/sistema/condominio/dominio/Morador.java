@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.sistema.condominio.dto.MoradorDto;
 import br.com.sistema.condominio.enums.Bloco;
 import br.com.sistema.condominio.enums.Garagem;
 import jakarta.persistence.CascadeType;
@@ -28,6 +29,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Morador {
+	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;	
@@ -37,9 +40,7 @@ public class Morador {
 	private String fone;
 	private Bloco bloco;
 	private Integer apartamento;
-	private Garagem garagem;
-	@Column(length = 500)
-	private Double valorCondominio;
+	private Garagem garagem;	
 	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<Ocorrencia> ocorrencia = new ArrayList<>();	
 	
@@ -47,5 +48,13 @@ public class Morador {
     @JoinColumn(name = "morador_id", referencedColumnName = "id")
 	private Lazer lazer;
 	
-
+    public Morador(MoradorDto morador) {
+    	this.dataHora = morador.getDataHora();
+		this.nome = morador.getNome();
+		this.cpf = morador.getCpf();
+		this.fone = morador.getFone();
+		this.bloco = morador.getBloco();
+		this.apartamento = morador.getApartamento();
+		this.garagem = morador.getGaragem();
+    }	
 }
