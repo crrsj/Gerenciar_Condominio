@@ -1,6 +1,6 @@
 package br.com.sistema.condominio.dominio;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -14,7 +14,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,8 +41,11 @@ public class Morador {
 	@Column(length = 500)
 	private Double valorCondominio;
 	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
-	private List<Ocorrencia> ocorrencia = new ArrayList<>();
+	private List<Ocorrencia> ocorrencia = new ArrayList<>();	
 	
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "morador_id", referencedColumnName = "id")
+	private Lazer lazer;
 	
 
 }
