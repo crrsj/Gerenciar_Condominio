@@ -3,7 +3,9 @@ package br.com.sistema.condominio.dominio;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import br.com.sistema.condominio.dto.OcorrenciaDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,6 +25,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Ocorrencia {
     
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -33,7 +36,15 @@ public class Ocorrencia {
     private Double multa;
     @ManyToOne
     @JoinColumn(name = "morador_id")
+    @JsonIgnore
     private Morador morador;
     
+    public Ocorrencia(OcorrenciaDto ocorrencia) {
+		this.id = ocorrencia.getId();
+		this.data = ocorrencia.getData();
+		this.descricao = ocorrencia.getDescricao();
+		this.multa = ocorrencia.getMulta();
+		this.morador = ocorrencia.getMorador();
+	}
 
 }
