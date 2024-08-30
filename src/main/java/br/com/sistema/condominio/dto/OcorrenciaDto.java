@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.sistema.condominio.dominio.Morador;
 import br.com.sistema.condominio.dominio.Ocorrencia;
-import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OcorrenciaDto {
 
-	private Long id;
-    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "dd/MM/yyyy")
-	private LocalDate data;
-    @Column(length = 500)
+	private Long id; 
+   @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "dd/MM/yyyy")
+	private LocalDate data; 
+    @NotBlank(message = "Não pode estar em branco")
     private String descricao;
     private Double multa;   
     private Morador morador;

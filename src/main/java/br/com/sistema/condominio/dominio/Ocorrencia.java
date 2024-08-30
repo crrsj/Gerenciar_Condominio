@@ -2,7 +2,7 @@ package br.com.sistema.condominio.dominio;
 
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.sistema.condominio.dto.OcorrenciaDto;
@@ -29,9 +29,8 @@ public class Ocorrencia {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "dd/MM/yyyy")
-	private LocalDate data;
-    @Column(length = 500)
+	private LocalDate data;  
+	@Column(length = 500)
     private String descricao;
     private Double multa;
     @ManyToOne

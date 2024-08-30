@@ -9,7 +9,10 @@ import br.com.sistema.condominio.dominio.Lazer;
 import br.com.sistema.condominio.dominio.Morador;
 import br.com.sistema.condominio.enums.Area;
 import br.com.sistema.condominio.enums.Status;
-import jakarta.persistence.OneToOne;
+
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,13 +21,18 @@ import lombok.NoArgsConstructor;
 public class LazerDto {
 	
 	private Long id;
-	@JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "dd/MM/yyyy")
-	private LocalDate dataEvento;
+	@JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "dd/MM/yyyy")	
+	@NotBlank(message = "Não pode estar em branco")
+	private LocalDate dataEvento;	
+	@NotBlank(message = "Não pode estar em branco")
 	private LocalTime horaInicio;
-	private LocalTime horaFim;  	
+	@NotBlank(message = "Não pode estar em branco")
+	private LocalTime horaFim;
+	@Enumerated(EnumType.STRING)
 	private Area area;
+	@Enumerated(EnumType.STRING)
 	private Status status;
-	@OneToOne
+	
 	private Morador morador;
 	
 	

@@ -12,6 +12,7 @@ import br.com.sistema.condominio.enums.Bloco;
 import br.com.sistema.condominio.enums.Garagem;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 @Data
@@ -19,8 +20,11 @@ import lombok.NoArgsConstructor;
 public class MoradorDto {
 	
 	private String dataHora = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+	@NotBlank(message = "Não pode estar em branco")
 	private String nome;
+	@NotBlank(message = "Não pode estar em branco")
 	private String cpf;
+	@NotBlank(message = "Não pode estar em branco")
 	private String fone;
 	@Enumerated(EnumType.STRING)
 	private Bloco bloco;
@@ -31,7 +35,7 @@ public class MoradorDto {
 
 	private List<Ocorrencia> ocorrencia = new ArrayList<>();	
 	
-   	private Lazer lazer;
+   	private List<Lazer>  lazer;
 	
 	
 	public MoradorDto(Morador cadastro) {

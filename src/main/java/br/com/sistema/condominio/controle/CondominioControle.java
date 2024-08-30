@@ -18,7 +18,13 @@ import br.com.sistema.condominio.dto.LazerDto;
 import br.com.sistema.condominio.dto.MoradorDto;
 import br.com.sistema.condominio.dto.MoradoresDto;
 import br.com.sistema.condominio.dto.OcorrenciaDto;
+import br.com.sistema.condominio.dto.VisitanteDto;
 import br.com.sistema.condominio.servico.CondominioServico;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 
 
 @RestController
@@ -29,14 +35,24 @@ public class CondominioControle {
 	private CondominioServico condominioServico;
 	
 	@PostMapping
-	public ResponseEntity<MoradorDto>cadastrarMorador(@RequestBody MoradorDto morador){
+	@Operation(summary = "Rota responsável pelo cadastro de moradores.") 
+    @ApiResponse(responseCode = "201",description = "Morador cadastrado com sucesso",content = {
+   		@Content(mediaType = "application.json",schema = @Schema(implementation = ResponseEntity.class))
+    })           
+	public ResponseEntity<MoradorDto>cadastrarMorador(@RequestBody @Valid MoradorDto morador){
 		var cadastro = condominioServico.cadastrarMorador(morador);
 		var uri = ServletUriComponentsBuilder.fromCurrentRequest().path("{id}")
 				.buildAndExpand(cadastro.getId()).toUri();
 		return ResponseEntity.created(uri).body(new MoradorDto(cadastro));
 	}
+	
+	
 	@PostMapping("ocorrencia/{moradorId}")
-	public ResponseEntity<OcorrenciaDto>cadastrarOcorrencia(@RequestBody OcorrenciaDto ocorrenciadto,@PathVariable("moradorId") 
+	@Operation(summary = "Rota responsável pelo cadastro de ocorrências. ") 
+    @ApiResponse(responseCode = "201",description = "Ocorrência cadastrada com sucesso",content = {
+   		@Content(mediaType = "application.json",schema = @Schema(implementation = ResponseEntity.class))
+    })           
+	public ResponseEntity<OcorrenciaDto>cadastrarOcorrencia(@RequestBody @Valid OcorrenciaDto ocorrenciadto,@PathVariable("moradorId") 
 	     Long moradorId){
 		
 		var ocorrencia = condominioServico.cadastrarOcorrencia( ocorrenciadto, moradorId);
@@ -48,7 +64,11 @@ public class CondominioControle {
 	}
 	
 	@PostMapping("lazer/{moradorId}")
-	public ResponseEntity<LazerDto>alugarEspaco(@RequestBody LazerDto lazerDto,@PathVariable("moradorId")
+	@Operation(summary = "Rota responsável pelo cadastro de aluguel de espaço.") 
+    @ApiResponse(responseCode = "201",description = "Espaço alugado com sucesso",content = {
+   		@Content(mediaType = "application.json",schema = @Schema(implementation = ResponseEntity.class))
+    })           
+	public ResponseEntity<LazerDto>alugarEspaco(@RequestBody @Valid LazerDto lazerDto,@PathVariable("moradorId")
 	
 			Long moradorId){
 		
@@ -59,32 +79,66 @@ public class CondominioControle {
 	}
 	
 	@GetMapping
+	@Operation(summary = "Rota responsável pela busca de todos os moradores.") 
+    @ApiResponse(responseCode = "200",description = "Sucesso",content = {
+   		@Content(mediaType = "application.json",schema = @Schema(implementation = ResponseEntity.class))
+    })           
 	public ResponseEntity<List<MoradoresDto>>listarMoradores(){
 		var listar = condominioServico.listarTodos();
 		return ResponseEntity.ok(listar);
 	}
 	
 	@GetMapping("area")
+	@Operation(summary = "Rota responsável pela busca de área reservada.") 
+    @ApiResponse(responseCode = "200",description = "Sucesso",content = {
+   		@Content(mediaType = "application.json",schema = @Schema(implementation = ResponseEntity.class))
+    })           
 	public ResponseEntity<LazerDto>buscarAreaReservada(){
 		var buscarArea = condominioServico.buscarAreaReservada();
 		return ResponseEntity.ok().body(new LazerDto(buscarArea));
 	}
 	
 	@PutMapping
-	public ResponseEntity<MoradoresDto>atualizarMorador(@RequestBody MoradoresDto moradoresDto,@PathVariable Long id ){
+	@Operation(summary = "Rota responsável pela atualização de cadastro de moradores.") 
+    @ApiResponse(responseCode = "200",description = "Morador cadastrado com sucesso",content = {
+   		@Content(mediaType = "application.json",schema = @Schema(implementation = ResponseEntity.class))
+    })           
+	public ResponseEntity<MoradoresDto>atualizarMorador(@RequestBody @Valid MoradoresDto moradoresDto,@PathVariable Long id ){
 		var atualizar = condominioServico.AtualizarMorador(moradoresDto, id);
 		return ResponseEntity.ok().body(new MoradoresDto(atualizar));
 	}
 	
 	@GetMapping("{id}")
+	@Operation(summary = "Rota responsável pela busca de  de morador pelo id.") 
+    @ApiResponse(responseCode = "200",description = "Sucesso",content = {
+   		@Content(mediaType = "application.json",schema = @Schema(implementation = ResponseEntity.class))
+    })           
 	public ResponseEntity<MoradoresDto>buscarMoradorPorId(@PathVariable Long id){
 		var buscaPorId = condominioServico.buscarPorId(id);
 		return ResponseEntity.ok().body(new MoradoresDto(buscaPorId));
 	}
 	
 	@DeleteMapping("{id}")
+	@Operation(summary = "Rota responsável pela exclusão de morador.") 
+    @ApiResponse(responseCode = "204",description = "Sucesso",content = {
+   		@Content(mediaType = "application.json",schema = @Schema(implementation = ResponseEntity.class))
+    })           
 	public ResponseEntity<Void>excluir(@PathVariable Long id){
 		condominioServico.excluir(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@PostMapping("visitante/{moradorId}")
+	@Operation(summary = "Rota responsável pelo cadastro de visitantes.") 
+    @ApiResponse(responseCode = "201",description = "Visitante cadastrado com sucesso",content = {
+   		@Content(mediaType = "application.json",schema = @Schema(implementation = ResponseEntity.class))
+    })           
+	public ResponseEntity<VisitanteDto>cadastrarVisitante(@RequestBody VisitanteDto visitante,@PathVariable("moradorId")
+	 Long moradorId){
+		var cadastrar = condominioServico.cadastrarVisitante(visitante, moradorId);
+		var uri = ServletUriComponentsBuilder.fromCurrentRequest().path("{id}")
+				.buildAndExpand(cadastrar.getId()).toUri();
+		
+		return ResponseEntity.created(uri).body(new VisitanteDto(cadastrar));
 	}
 }

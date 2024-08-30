@@ -21,7 +21,7 @@ public class MoradoresDto {
 	private Integer apartamento;
 	private Garagem garagem;	
 	private List<Ocorrencia> ocorrencia = new ArrayList<>();	     
-	private Lazer lazer;
+	private List<Lazer> lazer = new ArrayList<>();
 	
 	public MoradoresDto(Morador morador) {
 		this.id = morador.getId();

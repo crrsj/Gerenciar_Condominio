@@ -3,19 +3,18 @@ package br.com.sistema.condominio.dominio;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.sistema.condominio.dto.LazerDto;
 import br.com.sistema.condominio.enums.Area;
 import br.com.sistema.condominio.enums.Status;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,18 +29,17 @@ public class Lazer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "dd/MM/yyyy")
+	@Column(unique =  true)
 	private LocalDate dataEvento;
 	private LocalTime horaInicio;
-	private LocalTime horaFim;  
-	@Enumerated(EnumType.STRING)
-	private Area area;
-	@Enumerated(EnumType.STRING)
+	private LocalTime horaFim;	
+	private Area area;	 
 	private Status status;
-	@OneToOne
+	@ManyToOne
+	@JoinColumn(name = "morador_id")
 	@JsonIgnore
 	private Morador morador;
-	
+	 
 
 	public Lazer(LazerDto lazerDto) {
 		this.id = lazerDto.getId();
