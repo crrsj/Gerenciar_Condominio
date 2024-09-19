@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -64,7 +65,7 @@ public class CondominioControle {
 	}
 	
 	@PostMapping("lazer/{moradorId}")
-	@Operation(summary = "Rota responsável pelo cadastro de aluguel de espaço.") 
+	@Operation(summary = "Rota responsável pelo cadastro de reserva de espaço.") 
     @ApiResponse(responseCode = "201",description = "Espaço alugado com sucesso",content = {
    		@Content(mediaType = "application.json",schema = @Schema(implementation = ResponseEntity.class))
     })           
@@ -140,5 +141,17 @@ public class CondominioControle {
 				.buildAndExpand(cadastrar.getId()).toUri();
 		
 		return ResponseEntity.created(uri).body(new VisitanteDto(cadastrar));
+	}
+	
+	@GetMapping("nome")
+	@Operation(summary = "Rota responsável pela busca de moradores pelo nome.") 
+    @ApiResponse(responseCode = "200",description = "Sucesso",content = {
+   		@Content(mediaType = "application.json",schema = @Schema(implementation = ResponseEntity.class))
+   		
+    })           	
+	public ResponseEntity<List<MoradoresDto>>buscarPorNome(@RequestParam(name ="nome") String nome){
+		var busca = condominioServico.buscarPorNome(nome).stream().map(MoradoresDto::new).toList();
+		return ResponseEntity.ok(busca);
+				
 	}
 }

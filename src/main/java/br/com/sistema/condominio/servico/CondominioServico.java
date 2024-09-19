@@ -89,4 +89,8 @@ public class CondominioServico {
 		cadastrar.setMorador(cadastro);
 		return visitanteRepositorio.save(cadastrar);
 	}
+	
+	public List<Morador> buscarPorNome(String nome) {
+		return moradorRepositorio.findByNome(nome.trim().toUpperCase());
+	}
 }
